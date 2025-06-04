@@ -61,29 +61,29 @@ function App() {
               showInstructions ? "block" : "hidden"
             } lg:block bg-white rounded p-4 shadow lg:sticky lg:top-6`}
           >
-            <h2 className="text-2xl font-semibold mb-4">
+            <h2 className="text-xl font-bold mb-10">
              🎉 Join the #11MillionWays with Chivita Challenge!
             </h2>
-            <div>
-              <h2>Create Your Chivita Recipe 🧃</h2>
-              <p>Come up with a fun, delicious, or unexpected recipe using any Chivita product (e.g. smoothies, mocktails, desserts, etc.).</p>
+            <div className="mb-6">
+              <h2 className="font-bold text-lg text-red-900">Step 1: Create Your Chivita Recipe 🧃</h2>
+              <p className="text-sm">Come up with a fun, delicious, or unexpected recipe using any Chivita product (e.g. smoothies, mocktails, desserts, etc.).</p>
             </div>
-            <div>
-              <h2>Record a Video 🎬</h2>
-              <p>Film yourself making the recipe — show us your ingredients, your process, and the final result! Make it fun, clear, and personal.</p>
+            <div className="mb-6">
+              <h2 className="font-bold text-lg text-red-900"> Step 2: Record a Video 🎬</h2>
+              <p className="text-sm">Film yourself making the recipe — show us your ingredients, your process, and the final result! Make it fun, clear, and personal.</p>
             </div>
-            <div>
-              <h2>Post Your Video 📲</h2>
-              <p>Upload your video to <strong>Instagram</strong> or <strong>YouTube</strong>.<br/>
+            <div className="mb-6">
+              <h2 className="font-bold text-lg text-red-900">Step 3: Post Your Video 📲</h2>
+              <p className="text-sm">Upload your video to <strong>Instagram</strong> or <strong>YouTube</strong>.<br/>
                 🔖 <strong>IMPORTANT:</strong> In your caption or title, use the hashtag <strong>#11MillionWays</strong> and tag <strong>Chivita</strong> to make sure we see it!
               </p>
             </div>
-            <div>
-              <h2>Inspire Others 💥</h2>
-              <p>Share your video with friends, family, or followers. You never know who you'll inspire!</p>
+            <div className="mb-6">
+              <h2 className="font-bold text-lg text-red-900"> Step 4: Inspire Others 💥</h2>
+              <p className="text-sm">Share your video with friends, family, or followers. You never know who you'll inspire!</p>
             </div>
-            <div>
-               <h2>🌟 Bonus Tips:</h2>
+            <div className="mb-6">
+               <h2 className="font-bold text-lg text-red-900">🌟 Bonus Tips:</h2>
                 <ul>
                   <li>Keep your video under 60–90 seconds if posting on Instagram Reels or YouTube Shorts.</li>
                   <li>Show your face and talk us through the recipe!</li>
