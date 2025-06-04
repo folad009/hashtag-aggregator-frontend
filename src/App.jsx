@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
-import { Youtube, Instagram, Music2, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Youtube,
+  Instagram,
+  Music2,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 
 const socket = io("https://hashtag-aggregator-backend.onrender.com");
 
@@ -19,7 +25,13 @@ function App() {
     filter === "all" ? posts : posts.filter((p) => p.type === filter);
 
   return (
-    <div className="p-4 min-h-screen w-full" style={{backgroundImage: "url('/assets/img/background-11millionsway.jpg')", backgroundSize: 'cover'}}>
+    <div
+      className="p-4 min-h-screen w-full"
+      style={{
+        backgroundImage: "url('/assets/img/background-11millionsway.jpg')",
+        backgroundSize: "cover",
+      }}
+    >
       <h2 className="px-10 py-6 text-2xl font-bold text-center">
         #11MillionsWays Social Wall
       </h2>
@@ -32,7 +44,9 @@ function App() {
             className="lg:hidden flex items-center justify-between w-full px-4 py-2 bg-white rounded shadow mb-2"
             onClick={() => setShowInstructions(!showInstructions)}
           >
-            <span className="font-semibold">Instructions: How to participate</span>
+            <span className="font-semibold">
+              Instructions: How to participate
+            </span>
             {showInstructions ? <ChevronUp /> : <ChevronDown />}
           </button>
 
@@ -42,7 +56,9 @@ function App() {
               showInstructions ? "block" : "hidden"
             } lg:block bg-white rounded p-4 shadow lg:sticky lg:top-6`}
           >
-            <h2 className="text-2xl font-semibold mb-4">Instructions: How to participate</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+              Instructions: How to participate
+            </h2>
             <p className="text-sm text-gray-700 mb-2">
               Use the filter buttons to view content from different platforms.
             </p>
@@ -145,22 +161,56 @@ function App() {
                 {(post.type === "instagram" || post.type === "tiktok") && (
                   <>
                     {post.media_url && post.media_type === "video" ? (
-                      <video
-                        controls
-                        className="mb-2 w-full rounded"
-                        src={post.media_url}
-                        poster={post.thumbnail}
+                      <a
+                        href={post.permalink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block relative"
                       >
-                        Your browser does not support the video tag.
-                      </video>
+                        <img
+                          src={post.thumbnail || post.media_url}
+                          alt="Video thumbnail"
+                          className="mb-2 w-full rounded"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded">
+                          <svg
+                            className="w-12 h-12 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                        <div className="text-sm text-blue-600 underline mt-1">
+                          Watch on{" "}
+                          {post.type.charAt(0).toUpperCase() +
+                            post.type.slice(1)}
+                        </div>
+                      </a>
                     ) : (
                       post.media_url && (
-                        <img
-                          loading="lazy"
-                          src={post.media_url}
-                          alt={post.content?.slice(0, 30) || "Media"}
-                          className="mb-2 w-full h-auto rounded"
-                        />
+                        <>
+                          <img
+                            loading="lazy"
+                            src={post.media_url}
+                            alt={post.content?.slice(0, 30) || "Media"}
+                            className="mb-2 w-full h-auto rounded"
+                          />
+                          <a
+                            href={post.permalink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`underline text-sm ${
+                              post.type === "instagram"
+                                ? "text-pink-600"
+                                : "text-black"
+                            }`}
+                          >
+                            View on{" "}
+                            {post.type.charAt(0).toUpperCase() +
+                              post.type.slice(1)}
+                          </a>
+                        </>
                       )
                     )}
 
