@@ -125,56 +125,54 @@ function App() {
                   </>
                 )}
 
+                
                 {/* Instagram & TikTok */}
-                {(post.type === "instagram" || post.type === "tiktok") && (
-                  <>
-                    <a
-                      href={post.permalink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block relative group"
-                    >
-                      <img
-                        loading="lazy"
-                        src={post.thumbnail || "/assets/img/default-thumbnail.jpg"}
-                        alt="Post thumbnail"
-                        className="mb-2 w-full h-auto rounded"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "/assets/img/default-thumbnail.jpg";
-                        }}
-                      />
-                      {post.media_type === "video" && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded group-hover:bg-opacity-50 transition">
-                          <svg
-                            className="w-12 h-12 text-white opacity-80"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      )}
-                    </a>
+{(post.type === "instagram" || post.type === "tiktok") && (
+  <div>
+    {post.video ? (
+      <video
+        controls
+        className="mb-2 w-full h-auto rounded"
+        poster={post.image || post.thumbnail || "/assets/img/default-thumbnail.jpg"}
+      >
+        <source src={post.video} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    ) : (
+      <img
+        loading="lazy"
+        src={post.image || post.thumbnail || "/assets/img/default-thumbnail.jpg"}
+        alt="Post thumbnail"
+        className="mb-2 w-full h-auto rounded"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = "/assets/img/default-thumbnail.jpg";
+        }}
+      />
+    )}
 
-                    {post.content && (
-                      <p className="text-sm text-gray-700 mb-2">{post.content}</p>
-                    )}
+    {post.message && (
+      <p
+        className="text-sm text-gray-700 mb-2 whitespace-pre-wrap break-words"
+        dangerouslySetInnerHTML={{ __html: post.message }}
+      />
+    )}
 
-                    {post.permalink && (
-                      <a
-                        href={post.permalink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`underline text-sm ${
-                          post.type === "instagram" ? "text-pink-600" : "text-black"
-                        }`}
-                      >
-                        View on {platformLabel(post.type)}
-                      </a>
-                    )}
-                  </>
-                )}
+    {post.full_url && (
+      <a
+        href={post.full_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`underline text-sm ${
+          post.type === "instagram" ? "text-pink-600" : "text-black"
+        }`}
+      >
+        View on {platformLabel(post.type)}
+      </a>
+    )}
+  </div>
+)}
+
               </div>
             ))}
           </div>
