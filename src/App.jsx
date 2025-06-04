@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
-import {
-  Youtube,
-  Instagram,
-  Music2,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { Youtube, Instagram, Music2, ChevronDown, ChevronUp } from "lucide-react";
 
 const socket = io("https://hashtag-aggregator-backend.onrender.com");
 
@@ -21,8 +15,14 @@ function App() {
     });
   }, []);
 
-  const filteredPosts =
-    filter === "all" ? posts : posts.filter((p) => p.type === filter);
+  const filteredPosts = filter === "all" ? posts : posts.filter((p) => p.type === filter);
+
+  const platformLabel = (type) => {
+    if (type === "instagram") return "Instagram";
+    if (type === "youtube") return "YouTube";
+    if (type === "tiktok") return "TikTok";
+    return "";
+  };
 
   return (
     <div
@@ -39,29 +39,20 @@ function App() {
       <div className="flex flex-col lg:flex-row gap-6 px-6">
         {/* Instructions Column */}
         <div className="lg:w-1/3 w-full">
-          {/* Mobile Toggle Button */}
           <button
             className="lg:hidden flex items-center justify-between w-full px-4 py-2 bg-white rounded shadow mb-2"
             onClick={() => setShowInstructions(!showInstructions)}
           >
-            <span className="font-semibold">
-              Instructions: How to participate
-            </span>
+            <span className="font-semibold">Instructions: How to participate</span>
             {showInstructions ? <ChevronUp /> : <ChevronDown />}
           </button>
 
-          {/* Instructions Panel */}
           <div
             className={`${
               showInstructions ? "block" : "hidden"
             } lg:block bg-white rounded p-4 shadow lg:sticky lg:top-6`}
           >
-            <h2 className="text-2xl font-semibold mb-4">
-              Instructions: How to participate
-            </h2>
-            <p className="text-sm text-gray-700 mb-2">
-              Use the filter buttons to view content from different platforms.
-            </p>
+            <h2 className="text-2xl font-semibold mb-4">Instructions: How to participate</h2>
             <ul className="list-disc list-inside text-sm text-gray-600">
               <li>Click "All" to view everything.</li>
               <li>Choose a platform icon to filter by type.</li>
@@ -76,28 +67,14 @@ function App() {
           <div className="flex justify-start lg:justify-center gap-4 mb-6 flex-wrap">
             {[
               { label: "All", type: "all" },
-              {
-                label: "YouTube",
-                type: "youtube",
-                icon: <Youtube className="inline w-4 h-4 mr-1" />,
-              },
-              {
-                label: "Instagram",
-                type: "instagram",
-                icon: <Instagram className="inline w-4 h-4 mr-1" />,
-              },
-              {
-                label: "TikTok",
-                type: "tiktok",
-                icon: <Music2 className="inline w-4 h-4 mr-1" />,
-              },
+              { label: "YouTube", type: "youtube", icon: <Youtube className="inline w-4 h-4 mr-1" /> },
+              { label: "Instagram", type: "instagram", icon: <Instagram className="inline w-4 h-4 mr-1" /> },
+              { label: "TikTok", type: "tiktok", icon: <Music2 className="inline w-4 h-4 mr-1" /> },
             ].map(({ label, type, icon }) => (
               <button
                 key={type}
                 className={`px-4 py-2 rounded ${
-                  filter === type
-                    ? "bg-red-600 text-black font-bold"
-                    : "bg-white text-red-600 border"
+                  filter === type ? "bg-red-600 text-black font-bold" : "bg-white text-red-600 border"
                 }`}
                 onClick={() => setFilter(type)}
               >
@@ -109,30 +86,21 @@ function App() {
           {/* Masonry Layout */}
           <div className="columns-1 sm:columns-2 lg:columns-2 gap-4 space-y-4">
             {filteredPosts.map((post, idx) => (
-              <div
-                key={idx}
-                className="break-inside-avoid p-4 bg-white rounded shadow mb-4"
-              >
+              <div key={idx} className="break-inside-avoid p-4 bg-white rounded shadow mb-4">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-2">
-                  <span className="capitalize text-sm font-semibold text-gray-700">
-                    {post.type}
+                  <span className="capitalize text-sm font-semibold text-gray-700">{post.type}</span>
+                  <span
+                    className={`text-xs px-2 py-1 rounded font-bold ${
+                      post.type === "instagram"
+                        ? "bg-pink-100 text-pink-600"
+                        : post.type === "youtube"
+                        ? "bg-red-100 text-red-600"
+                        : "bg-black text-white"
+                    }`}
+                  >
+                    {platformLabel(post.type)}
                   </span>
-                  {post.type === "instagram" && (
-                    <span className="text-xs px-2 py-1 rounded bg-pink-100 text-pink-600 font-bold">
-                      Instagram
-                    </span>
-                  )}
-                  {post.type === "youtube" && (
-                    <span className="text-xs px-2 py-1 rounded bg-red-100 text-red-600 font-bold">
-                      YouTube
-                    </span>
-                  )}
-                  {post.type === "tiktok" && (
-                    <span className="text-xs px-2 py-1 rounded bg-black text-white font-extrabold">
-                      TikTok
-                    </span>
-                  )}
                 </div>
 
                 {/* YouTube */}
@@ -157,66 +125,41 @@ function App() {
                   </>
                 )}
 
-                {/* Instagram & TikTok from Juicer */}
+                {/* Instagram & TikTok */}
                 {(post.type === "instagram" || post.type === "tiktok") && (
                   <>
-                    {post.media_url && post.media_type === "video" ? (
-                      <a
-                        href={post.permalink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block relative"
-                      >
-                        <img
-                          src={post.thumbnail || post.media_url}
-                          alt="Video thumbnail"
-                          className="mb-2 w-full rounded"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded">
+                    <a
+                      href={post.permalink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block relative group"
+                    >
+                      <img
+                        loading="lazy"
+                        src={post.thumbnail || "/assets/img/default-thumbnail.jpg"}
+                        alt="Post thumbnail"
+                        className="mb-2 w-full h-auto rounded"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "/assets/img/default-thumbnail.jpg";
+                        }}
+                      />
+                      {post.media_type === "video" && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded group-hover:bg-opacity-50 transition">
                           <svg
-                            className="w-12 h-12 text-white"
+                            className="w-12 h-12 text-white opacity-80"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                           >
                             <path d="M8 5v14l11-7z" />
                           </svg>
                         </div>
-                        <div className="text-sm text-blue-600 underline mt-1">
-                          Watch on{" "}
-                          {post.type.charAt(0).toUpperCase() +
-                            post.type.slice(1)}
-                        </div>
-                      </a>
-                    ) : (
-                      post.media_url && (
-                        <>
-                          <img
-                            loading="lazy"
-                            src={post.media_url}
-                            alt={post.content?.slice(0, 30) || "Media"}
-                            className="mb-2 w-full h-auto rounded"
-                          />
-                          <a
-                            href={post.permalink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={`underline text-sm ${
-                              post.type === "instagram"
-                                ? "text-pink-600"
-                                : "text-black"
-                            }`}
-                          >
-                            View on{" "}
-                            {post.type.charAt(0).toUpperCase() +
-                              post.type.slice(1)}
-                          </a>
-                        </>
-                      )
-                    )}
+                      )}
+                    </a>
 
-                    <p className="text-sm text-gray-700 mb-2">
-                      {post.content || post.caption}
-                    </p>
+                    {post.content && (
+                      <p className="text-sm text-gray-700 mb-2">{post.content}</p>
+                    )}
 
                     {post.permalink && (
                       <a
@@ -224,13 +167,10 @@ function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`underline text-sm ${
-                          post.type === "instagram"
-                            ? "text-pink-600"
-                            : "text-black"
+                          post.type === "instagram" ? "text-pink-600" : "text-black"
                         }`}
                       >
-                        View on{" "}
-                        {post.type.charAt(0).toUpperCase() + post.type.slice(1)}
+                        View on {platformLabel(post.type)}
                       </a>
                     )}
                   </>
