@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
-import { Youtube, Instagram, Music2, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Youtube,
+  Instagram,
+  Music2,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 
 const socket = io("https://hashtag-aggregator-backend.onrender.com");
 
@@ -15,7 +21,8 @@ function App() {
     });
   }, []);
 
-  const filteredPosts = filter === "all" ? posts : posts.filter((p) => p.type === filter);
+  const filteredPosts =
+    filter === "all" ? posts : posts.filter((p) => p.type === filter);
 
   const platformLabel = (type) => {
     if (type === "instagram") return "Instagram";
@@ -43,7 +50,9 @@ function App() {
             className="lg:hidden flex items-center justify-between w-full px-4 py-2 bg-white rounded shadow mb-2"
             onClick={() => setShowInstructions(!showInstructions)}
           >
-            <span className="font-semibold">Instructions: How to participate</span>
+            <span className="font-semibold">
+              Instructions: How to participate
+            </span>
             {showInstructions ? <ChevronUp /> : <ChevronDown />}
           </button>
 
@@ -52,7 +61,9 @@ function App() {
               showInstructions ? "block" : "hidden"
             } lg:block bg-white rounded p-4 shadow lg:sticky lg:top-6`}
           >
-            <h2 className="text-2xl font-semibold mb-4">Instructions: How to participate</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+              Instructions: How to participate
+            </h2>
             <ul className="list-disc list-inside text-sm text-gray-600">
               <li>Click "All" to view everything.</li>
               <li>Choose a platform icon to filter by type.</li>
@@ -67,14 +78,28 @@ function App() {
           <div className="flex justify-start lg:justify-center gap-4 mb-6 flex-wrap">
             {[
               { label: "All", type: "all" },
-              { label: "YouTube", type: "youtube", icon: <Youtube className="inline w-4 h-4 mr-1" /> },
-              { label: "Instagram", type: "instagram", icon: <Instagram className="inline w-4 h-4 mr-1" /> },
-              { label: "TikTok", type: "tiktok", icon: <Music2 className="inline w-4 h-4 mr-1" /> },
+              {
+                label: "YouTube",
+                type: "youtube",
+                icon: <Youtube className="inline w-4 h-4 mr-1" />,
+              },
+              {
+                label: "Instagram",
+                type: "instagram",
+                icon: <Instagram className="inline w-4 h-4 mr-1" />,
+              },
+              {
+                label: "TikTok",
+                type: "tiktok",
+                icon: <Music2 className="inline w-4 h-4 mr-1" />,
+              },
             ].map(({ label, type, icon }) => (
               <button
                 key={type}
                 className={`px-4 py-2 rounded ${
-                  filter === type ? "bg-red-600 text-black font-bold" : "bg-white text-red-600 border"
+                  filter === type
+                    ? "bg-red-600 text-black font-bold"
+                    : "bg-white text-red-600 border"
                 }`}
                 onClick={() => setFilter(type)}
               >
@@ -86,10 +111,15 @@ function App() {
           {/* Masonry Layout */}
           <div className="columns-1 sm:columns-2 lg:columns-2 gap-4 space-y-4">
             {filteredPosts.map((post, idx) => (
-              <div key={idx} className="break-inside-avoid p-4 bg-white rounded shadow mb-4">
+              <div
+                key={idx}
+                className="break-inside-avoid p-4 bg-white rounded shadow mb-4"
+              >
                 {/* Header */}
                 <div className="flex items-center justify-between mb-2">
-                  <span className="capitalize text-sm font-semibold text-gray-700">{post.type}</span>
+                  <span className="capitalize text-sm font-semibold text-gray-700">
+                    {post.type}
+                  </span>
                   <span
                     className={`text-xs px-2 py-1 rounded font-bold ${
                       post.type === "instagram"
@@ -125,54 +155,66 @@ function App() {
                   </>
                 )}
 
-                
                 {/* Instagram & TikTok */}
-{(post.type === "instagram" || post.type === "tiktok") && (
-  <div>
-    {post.video ? (
-      <video
-        controls
-        className="mb-2 w-full h-auto rounded"
-        poster={post.image || post.thumbnail || "/assets/img/default-thumbnail.jpg"}
-      >
-        <source src={post.video} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    ) : (
-      <img
-        loading="lazy"
-        src={post.image || post.thumbnail || "/assets/img/default-thumbnail.jpg"}
-        alt="Post thumbnail"
-        className="mb-2 w-full h-auto rounded"
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = "/assets/img/default-thumbnail.jpg";
-        }}
-      />
-    )}
+                {(post.type === "instagram" || post.type === "tiktok") && (
+                  <div>
+                    <a
+                      href={post.full_url || post.permalink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative block group mb-2"
+                    >
+                      <img
+                        loading="lazy"
+                        src={
+                          post.image ||
+                          post.thumbnail ||
+                          "/assets/img/default-thumbnail.jpg"
+                        }
+                        alt="Post thumbnail"
+                        className="w-full h-auto rounded"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "/assets/img/default-thumbnail.jpg";
+                        }}
+                      />
 
-    {post.message && (
-      <p
-        className="text-sm text-gray-700 mb-2 whitespace-pre-wrap break-words"
-        dangerouslySetInnerHTML={{ __html: post.message }}
-      />
-    )}
+                      {post.video && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded group-hover:bg-opacity-50 transition">
+                          <svg
+                            className="w-14 h-14 text-white opacity-90"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      )}
+                    </a>
 
-    {post.full_url && (
-      <a
-        href={post.full_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`underline text-sm ${
-          post.type === "instagram" ? "text-pink-600" : "text-black"
-        }`}
-      >
-        View on {platformLabel(post.type)}
-      </a>
-    )}
-  </div>
-)}
+                    {post.message && (
+                      <p
+                        className="text-sm text-gray-700 mb-2 whitespace-pre-wrap break-words"
+                        dangerouslySetInnerHTML={{ __html: post.message }}
+                      />
+                    )}
 
+                    {post.full_url && (
+                      <a
+                        href={post.full_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`underline text-sm ${
+                          post.type === "instagram"
+                            ? "text-pink-600"
+                            : "text-black"
+                        }`}
+                      >
+                        View on {platformLabel(post.type)}
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>
