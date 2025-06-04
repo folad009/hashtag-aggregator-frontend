@@ -84,10 +84,10 @@ function App() {
             </div>
             <div className="mb-6">
                <h2 className="font-bold text-lg text-red-900">🌟 Bonus Tips:</h2>
-                <ul>
-                  <li>Keep your video under 60–90 seconds if posting on Instagram Reels or YouTube Shorts.</li>
-                  <li>Show your face and talk us through the recipe!</li>
-                  <li>Get creative with ingredients or presentation — this is your moment to shine.</li>
+                <ul className="text-sm">
+                  <li className="mb-2"> - Keep your video under 60–90 seconds if posting on Instagram Reels or YouTube Shorts.</li>
+                  <li className="mb-2">- Show your face and talk us through the recipe!</li>
+                  <li className="mb-2">- Get creative with ingredients or presentation — this is your moment to shine.</li>
                 </ul>
             </div>
           </div>
