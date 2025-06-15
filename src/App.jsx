@@ -35,12 +35,12 @@ function App() {
     <div
       className="p-4 min-h-screen w-full"
       style={{
-        backgroundImage: "url('/assets/img/background-11millionsway.jpg')",
+        backgroundImage: "url('/assets/img/chi-bground.jpg')", // replace with gif background
         backgroundSize: "cover",
       }}
     >
-      <h2 className="px-10 py-6 text-2xl font-bold text-center underline">
-        Chivita 11 Million Ways Social Wall
+      <h2 className="px-10 py-6 text-2xl font-bold text-center underline text-rose-900">
+        Chivita Inspired By U Recipe Wall
       </h2>
 
       <div className="flex flex-col lg:flex-row gap-6 px-6">
@@ -62,7 +62,7 @@ function App() {
             } lg:block bg-white rounded p-4 shadow lg:sticky lg:top-6`}
           >
             <h2 className="text-xl font-bold mb-10">
-             🎉 Join the #11MillionWays with Chivita Challenge!
+             🎉 Join the #chivitainspiredbyou Challenge!
             </h2>
             <div className="mb-6">
               <h2 className="font-bold text-lg text-red-900">Step 1: Create Your Chivita Recipe 🧃</h2>
@@ -75,7 +75,7 @@ function App() {
             <div className="mb-6">
               <h2 className="font-bold text-lg text-red-900">Step 3: Post Your Video 📲</h2>
               <p className="text-sm">Upload your video to <strong>Instagram</strong> or <strong>YouTube</strong>.<br/>
-                🔖 <strong>IMPORTANT:</strong> In your caption or title, use the hashtag <strong>#11MillionWays</strong> and tag <strong>Chivita</strong> to make sure we see it!
+                🔖 <strong>IMPORTANT:</strong> In your caption or title, use the hashtag <strong>#chivitainspiredbyou</strong> and tag <strong>Chivita</strong> to make sure we see it!
               </p>
             </div>
             <div className="mb-6">
@@ -138,9 +138,9 @@ function App() {
               >
                 {/* Header */}
                 <div className="flex items-center justify-between mb-2">
-                  <span className="capitalize text-sm font-semibold text-gray-700">
+                  {/*<span className="capitalize text-sm font-semibold text-gray-700">
                     {post.type}
-                  </span>
+                  </span>*/}
                   <span
                     className={`text-xs px-2 py-1 rounded font-bold ${
                       post.type === "instagram"
